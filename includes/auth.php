@@ -108,8 +108,9 @@ class OIDCAuth {
         // 交换授权码获取token
         $tokenResponse = $this->exchangeCodeForToken($code, $codeVerifier);
 
-        // 获取用户信息
-        $userInfo = $this->getUserInfo($tokenResponse['access_token']);
+        // 获取用户信息，同时传递access_token和id_token
+        $idToken = $tokenResponse['id_token'] ?? null;
+        $userInfo = $this->getUserInfo($tokenResponse['access_token'], $idToken);
 
         // 创建或更新用户
         $user = $this->createOrUpdateUser($userInfo);
@@ -186,49 +187,9 @@ class OIDCAuth {
     /**
      * 获取用户信息
      */
-    private function getUserInfo($accessToken) {
-        $userinfoEndpoint = $this->providerConfig['userinfo_endpoint'];
-
-        // 使用cURL替代file_get_contents，以获得更好的错误处理
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $userinfoEndpoint);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Authorization: Bearer ' . $accessToken,
-            'User-Agent: AI-Chat-System/1.0'
-        ]);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
-
-        $response = curl_exec($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $error = curl_error($ch);
-        curl_close($ch);
-
-        if ($error) {
-            throw new Exception('cURL错误: ' . $error);
-        }
-
-        if ($httpCode !== 200) {
-            throw new Exception('获取用户信息失败，HTTP状态码: ' . $httpCode . ', 响应: ' . $response);
-        }
-
-        if ($response === false) {
-            throw new Exception('无法获取用户信息');
-        }
-
-        $userInfo = json_decode($response, true);
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new Exception('用户信息解析失败: ' . json_last_error_msg());
-        }
-
-        if (isset($userInfo['error'])) {
-            throw new Exception('获取用户信息失败: ' . $userInfo['error'] . ' - ' . ($userInfo['error_description'] ?? ''));
-        }
-
-        return $userInfo;
+    private function getUserInfo($accessToken, $idToken = null) {
+        // 使用辅助工具获取用户信息，它会处理各种可能的情况
+        return OidcHelper::getUserInfo($accessToken, $this->providerConfig, $idToken);
     }
 
     /**
