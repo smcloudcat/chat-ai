@@ -1,0 +1,257 @@
+/* 聊天界面样式 */
+
+/* 代码块样式 */
+pre {
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    overflow: auto;
+    margin: 10px 0;
+}
+
+code {
+    font-family: 'Courier New', Consolas, monospace;
+    background-color: #f4f4f4;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-size: 0.9em;
+}
+
+pre code {
+    background: none;
+    padding: 0;
+    border-radius: 0;
+}
+
+/* 消息气泡样式 */
+.message {
+    position: relative;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    border-radius: 12px;
+    line-height: 1.5;
+    max-width: 85%;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.user-message {
+    background-color: #007aff;
+    color: white;
+    margin-left: auto;
+    text-align: left;
+    border-bottom-right-radius: 4px;
+}
+
+.assistant-message {
+    background-color: white;
+    border: 1px solid #e5e5e5;
+    color: #333;
+    border-bottom-left-radius: 4px;
+}
+
+.system-message {
+    background-color: #f0f0f0;
+    color: #666;
+    font-size: 0.9em;
+    border: 1px dashed #ccc;
+}
+
+/* 滚动条样式 */
+#chat-messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+#chat-messages::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+#chat-messages::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+#chat-messages::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+#sidebar-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+#sidebar-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+#sidebar-content::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+#sidebar-content::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* 加载动画 */
+.typing-indicator {
+    display: inline-block;
+    padding: 12px 16px;
+    background-color: white;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    border-bottom-left-radius: 4px;
+}
+
+.typing-indicator span {
+    height: 8px;
+    width: 8px;
+    float: left;
+    margin: 0 2px;
+    background-color: #9E9EA1;
+    display: block;
+    border-radius: 50%;
+    opacity: 0.4;
+}
+
+.typing-indicator span:nth-of-type(1) {
+    animation: typing 1s infinite;
+}
+
+.typing-indicator span:nth-of-type(2) {
+    animation: typing 1s infinite 0.2s;
+}
+
+.typing-indicator span:nth-of-type(3) {
+    animation: typing 1s infinite 0.4s;
+}
+
+@keyframes typing {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Markdown样式增强 */
+.message h1, .message h2, .message h3, .message h4, .message h5, .message h6 {
+    margin: 10px 0 5px 0;
+}
+
+.message p {
+    margin: 10px 0;
+}
+
+.message ul, .message ol {
+    margin: 10px 0;
+    padding-left: 20px;
+}
+
+.message li {
+    margin: 5px 0;
+}
+
+.message blockquote {
+    margin: 10px 0;
+    padding: 10px 15px;
+    border-left: 4px solid #ddd;
+    background-color: #f9f9f9;
+    color: #666;
+}
+
+.message a {
+    color: #007aff;
+    text-decoration: none;
+}
+
+.message a:hover {
+    text-decoration: underline;
+}
+
+/* 对话项目样式 */
+.conversation-item {
+    padding: 10px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: background-color 0.2s;
+}
+
+.conversation-item:hover {
+    background-color: #f0f0f0;
+}
+
+.conversation-item.active {
+    background-color: #e6f7ff;
+    color: #1890ff;
+    border-left: 3px solid #1890ff;
+}
+
+/* 输入区域增强 */
+#message-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    resize: vertical;
+    min-height: 80px;
+    max-height: 200px;
+    font-family: inherit;
+    transition: border-color 0.2s;
+}
+
+#message-input:focus {
+    outline: none;
+    border-color: #007aff;
+    box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+}
+
+/* 按钮样式 */
+.layui-btn {
+    transition: all 0.2s;
+}
+
+/* Token信息样式 */
+.token-info {
+    font-size: 12px;
+    color: #999;
+    text-align: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.token-info.warning {
+    color: #ff6b35;
+}
+
+.token-info.danger {
+    color: #ff4d4f;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    #sidebar {
+        position: absolute;
+        left: -260px;
+        transition: left 0.3s ease;
+        height: 100%;
+        z-index: 20;
+    }
+    
+    #sidebar.open {
+        left: 0;
+    }
+    
+    #chat-container {
+        height: 100vh;
+        overflow: hidden;
+    }
+    
+    .message {
+        max-width: 90%;
+    }
+}
